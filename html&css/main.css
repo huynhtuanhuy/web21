@@ -1,0 +1,49 @@
+p {
+	color: #ff00f2;
+}
+
+.text-red,
+span {
+	color: #ff0000;
+}
+
+p.text-red {
+	background: #00ffff;
+}
+
+ul li {
+	color: #ff0000;
+}
+
+ul > li {
+	color: #ff00f2;
+}
+
+#top {
+	color: #00ffff;
+}
+
+input[type=email] {
+	background: #ff00f2;
+}
+
+a:hover {
+	color: #ff00f2;
+}
+
+img:hover {
+	width: 100px;
+}
+
+/* Chẵn lẻ
+ul li:nth-child(odd)
+ul li:nth-child(even) */
+
+#background {
+	height: 500px;
+	background-color: #ff00f2;
+	background-image: url('https://znews-photo.zadn.vn/w660/Uploaded/ohunua2/2018_02_24/14504835_310918849274454_2855615938546368512_n.jpg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
