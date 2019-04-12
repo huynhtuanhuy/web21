@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Quyết đê</title>
+	<script
+		src="https://code.jquery.com/jquery-3.4.0.min.js"
+		integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+		crossorigin="anonymous"></script>
+</head>
+<body>
+	<h1 id="content"></h1>
+	<div>Vote: <span id="total"></span></div>
+	<div>Yes: <span id="yes"></span></div>
+	<div>No: <span id="no"></span></div>
+	<a href="/"><button>Câu hỏi khác</button></a>
+
+	<script>
+		const questionId = window.location.pathname.split('/')[2];
+
+		$.ajax({
+			url: `http://localhost:6969/getinfo/${questionId}`,
+			type: "GET",
+			success: function(data) {
+				console.log(data);
+			},
+			error: function(err) {
+				console.log(err);
+			}
+		})
+	</script>
+</body>
+</html>

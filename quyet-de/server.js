@@ -7,6 +7,25 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", function(req, res) {
+	// res.send(`
+	// 	<h1>${question.content}</h1>
+	// 	<div>
+	// 		<a href="/vote/${question.id}/no">
+	// 			<button>Sai / Không / Trái</button>
+	// 		</a>
+	// 		<a href="/vote/${question.id}/yes">
+	// 			<button>Đúng / Có / Phải</button>
+	// 		</a>
+	// 	</div>
+	// 	<div>
+	// 		<button>Kết quả vote</button>
+	// 		<button>Câu hỏi khác</button>
+	// 	</div>
+	// `);
+	res.sendFile(__dirname + "/views/home.html");
+});
+
+app.get("/randomquestion", (req, res) => {
 	// get random question
 	const questionList = JSON.parse(
 		fs.readFileSync("./questions.json", { encoding: "utf-8" })
@@ -14,21 +33,7 @@ app.get("/", function(req, res) {
 	// 0 <= randomIndex < questionList.length
 	const randomIndex = Math.floor(Math.random()*questionList.length);
 	const question = questionList[randomIndex];
-	res.send(`
-		<h1>${question.content}</h1>
-		<div>
-			<a href="/vote/${question.id}/no">
-				<button>Sai / Không / Trái</button>
-			</a>
-			<a href="/vote/${question.id}/yes">
-				<button>Đúng / Có / Phải</button>
-			</a>
-		</div>
-		<div>
-			<button>Kết quả vote</button>
-			<button>Câu hỏi khác</button>
-		</div>
-	`);
+	res.send(question);
 });
 
 // /vote/1/yes
@@ -59,6 +64,14 @@ app.get("/vote/:questionId/:vote", (req, res) => {
 
 app.get("/ask", function(req, res) {
 	res.sendFile(__dirname + "/views/ask.html");
+});
+
+app.get("/question/:id", (req, res) => {
+	res.sendFile(__dirname + "/views/question.html");
+});
+
+app.get("/getinfo/:id", (req, res) => {
+	// TODO: Lấy thông tin của câu hỏi rồi trả về.
 });
 
 app.post("/addquestion", function(req, res) {

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Quyết đê</title>
+	<script
+		src="https://code.jquery.com/jquery-3.4.0.min.js"
+		integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+		crossorigin="anonymous"></script>
+</head>
+<body>
+	<h1 id="content"></h1>
+	<div>
+		<a id="no" href="#">
+			<button>Sai / Không / Trái</button>
+		</a>
+		<a id="yes" href="#">
+			<button>Đúng / Có / Phải</button>
+		</a>
+	</div>
+	<div>
+		<a id="result" href="#"><button>Kết quả vote</button></a>
+		<a href="/"><button>Câu hỏi khác</button></a>
+	</div>
+
+	<script>
+		$.ajax({
+			url: "http://localhost:6969/randomquestion",
+			type: "GET",
+			success: function(data) {
+				//console.log(data);
+				$("#content").text(data.content);
+				$("#no").attr("href", `/vote/${data.id}/no`);
+				$("#yes").attr("href", `/vote/${data.id}/yes`);
+				$("#result").attr("href", `/question/${data.id}`);
+			},
+			error: function(err) {
+				console.log(err);
+			}
+		});
+	</script>
+</body>
+</html>
