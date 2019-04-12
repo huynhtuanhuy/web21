@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Quyết đê</title>
+	<script
+		src="https://code.jquery.com/jquery-3.4.0.min.js"
+		integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+		crossorigin="anonymous"></script>
+</head>
+<body>
+	<!-- http://localhost:6969/ask -->
+	<h1>Hãy hỏi cộng đồng một câu hỏi đúng/sai hoặc có/không</h1>
+	<form action="/addquestion" method="post">
+		<textarea name="question" maxlength="200" id="question" cols="30" rows="10"></textarea>
+		<span id="remain">còn 200/200 ký tự</span>
+		<button>Gửi</button>
+	</form>
+
+	<script>
+		//document.getElementById("question").addEventListener("input", function() {
+		//	const remainChar = 200 - document.getElementById("question").value.length;
+		//	document.getElementById("remain").innerText = `còn ${remainChar}/200 ký tự`;
+		//});
+
+		// TODO: Chuyển về dùng JQuery.
+		$("#question").on("input", function() {
+			const remainChar = 200 - $("#question").val().length;
+			$("#remain").text(`còn ${remainChar}/200 ký tự`);
+		});
+	</script>
+</body>
+</html>

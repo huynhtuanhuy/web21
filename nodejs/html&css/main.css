@@ -31,16 +31,8 @@ a:hover {
 	color: #ff00f2;
 }
 
-img {
-	width: 100px;
-	position: fixed;
-	left: 25%;
-	top: 25%;
-	transition: all .3s linear 1s;
-}
-
 img:hover {
-	transform: scale(2);
+	width: 100px;
 }
 
 /* Chẵn lẻ
