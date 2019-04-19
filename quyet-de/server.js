@@ -1,7 +1,24 @@
 const express = require("express");
 const fs = require("fs");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const app = express();
+
+const QuestionModel = require("./models/questionModel");
+
+mongoose.connect(
+	"mongodb://localhost/quyet-de-21",
+	{ useNewUrlParser: true },
+	function(err) {
+		if(err) console.log(err)
+		else console.log("DB connect ok!");
+
+		// QuestionModel.find({}, function(err, docs) {
+		// 	if(err) console.log(err)
+		// 	else console.log("Questions: ", docs);
+		// });
+	}
+);
 
 // data-type: application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,13 +44,34 @@ app.get("/", function(req, res) {
 
 app.get("/randomquestion", (req, res) => {
 	// get random question
-	const questionList = JSON.parse(
-		fs.readFileSync("./questions.json", { encoding: "utf-8" })
-	);
-	// 0 <= randomIndex < questionList.length
-	const randomIndex = Math.floor(Math.random()*questionList.length);
-	const question = questionList[randomIndex];
-	res.send(question);
+	// const questionList = JSON.parse(
+	// 	fs.readFileSync("./questions.json", { encoding: "utf-8" })
+	// );
+	// // 0 <= randomIndex < questionList.length
+	// const randomIndex = Math.floor(Math.random()*questionList.length);
+	// const question = questionList[randomIndex];
+	// res.send(question);
+	// QuestionModel.find({}, (err, docs) => {
+	// 	if(err) console.log(err)
+	// 	else {
+	// 		const randomIndex = Math.floor(Math.random()*docs.length);
+	// 		const question = docs[randomIndex];
+	// 		res.json(question);
+	// 	}
+	// });
+	QuestionModel.count({}, (err, totalDoc) => {
+		if(err) console.log(err)
+		else {
+			const randomIndex = Math.floor(Math.random()*totalDoc);
+			QuestionModel
+				.findOne({})
+				.skip(randomIndex)
+				.exec((err, question) => {
+					if(err) console.log(err)
+					else res.json(question);
+				});
+		}
+	});
 });
 
 // /vote/1/yes
@@ -75,23 +113,13 @@ app.get("/getinfo/:id", (req, res) => {
 });
 
 app.post("/addquestion", function(req, res) {
-	// req.on("data", function(data) {
-	// 	console.log((data+"").split("="));
-	// });
-	// const question = req.body.question;
-	const questionList = JSON.parse(
-		fs.readFileSync("./questions.json", { encoding: "utf-8" })
-	);
 	const { question } = req.body;
-	const newQuestion = {
+	QuestionModel.create({
 		content: question,
-		yes: 0,
-		no: 0,
-		id: questionList.length,
-	}
-	questionList.push(newQuestion);
-	fs.writeFileSync("./questions.json", JSON.stringify(questionList));
-	res.send("Success");
+	}, function(err, docCreated) {
+		if(err) console.log(err)
+		else res.redirect("/");
+	});
 });
 
 app.listen(6969, function(err) {
