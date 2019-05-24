@@ -6,7 +6,7 @@ const PostModel = require('../models/post');
 // Get list post
 PostApiRouter.get('/', (req, res) => {
 	PostModel.find({})
-		.populate('author')
+		.populate('author', '-password')
 		.exec((err, posts) => {
 			if(err) res.json({ success: false, err })
 			else res.json({ success: true, data: posts });

@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const UserApiRouter = express.Router();
 
 const UserModel = require('../models/user');
@@ -12,7 +13,11 @@ UserApiRouter.get('/', (req, res) => {
 });
 
 // Create user
+// 123456 => $2b$12$UAqD2iNRNOnsOoBvIvr49OSEBmZYeW7mUXo5SGkhfpBE5PrlZhIaS
 UserApiRouter.post('/', (req, res) => {
+	const { password } = req.body;
+	const hashPassword = bcrypt.hashSync(password, 12);
+	req.body.password = hashPassword;
 	UserModel.create(req.body, (err, userCreated) => {
 		if(err) res.json({ success: false, err })
 		else res.json({ success: true, data: userCreated });
