@@ -4,13 +4,22 @@ const PostApiRouter = express.Router();
 const PostModel = require('../models/post');
 
 // Get list post
-PostApiRouter.get('/', (req, res) => {
-	PostModel.find({})
-		.populate('author', '-password')
-		.exec((err, posts) => {
-			if(err) res.json({ success: false, err })
-			else res.json({ success: true, data: posts });
-		});
+PostApiRouter.get('/', async (req, res) => {
+	// PostModel.find({})
+	// 	.populate('author', '-password')
+	// 	.then(posts => {
+	// 		res.json({ success: true, data: posts });
+	// 	})
+	// 	.catch(err => {
+	// 		res.json({ success: false, err })
+	// 	})
+
+	try {
+		const posts = await PostModel.find({}).populate('author', '-password');
+		res.json({ success: true, data: posts });
+	} catch (err) {
+		res.json({ success: false, err });
+	}
 });
 
 // Create post
